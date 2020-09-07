@@ -4,6 +4,7 @@ const Intern = require("./lib/Intern");
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const render = require("./lib/htmlRenderer");
 const employees = [];
 
 function addEmployee() {
@@ -37,6 +38,7 @@ function addEmployee() {
                 var newManager = new Manager(addMan.name, addMan.email, addMan.id, addMan.office);
                 console.log(newManager);
                 employees.push(addMan);
+                complete();
             });
         } else if (job.role === "Engineer") {
             inquirer.prompt([
@@ -60,6 +62,7 @@ function addEmployee() {
                 var newEngineer = new Engineer(addEng.name, addEng.email, addEng.id, addEng.github);
                 console.log(newEngineer);
                 employees.push(addEng);
+                complete();
             });
         } else if (job.role === "Intern") {
             inquirer.prompt([
@@ -83,18 +86,35 @@ function addEmployee() {
                 var newIntern = new Intern(addEng.name, addEng.email, addEng.id, addEng.school);
                 console.log(newIntern);
                 employees.push(addInt);
+                complete();
             });
         }
     })
 }
 
-addEmployee();
+function generateHTML() {
+    console.log(employees)
+}
+
+function complete() {
+    inquirer.prompt([
+        {
+            type: "confirm",
+            message: "Do you want to add another Team Member?",
+            name: "addanother"
+        }
+    ]).then(function(add) {
+        add.addanother ? addEmployee() : generateHTML()
+    })
+}
+
 
 
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-const render = require("./lib/htmlRenderer");
+
+
 
 
 // Write code to use inquirer to gather information about the development team members,
@@ -119,3 +139,7 @@ const render = require("./lib/htmlRenderer");
 // for further information. Be sure to test out each class and verify it generates an
 // object with the correct structure and methods. This structure will be crucial in order
 // for the provided `render` function to work! ```
+
+
+
+addEmployee();
