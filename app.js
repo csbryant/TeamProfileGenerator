@@ -85,7 +85,7 @@ function addEmployee() {
                 name: "school"
                 }
             ]).then(function (addInt) {
-                var newIntern = new Intern(addEng.name, addEng.id, addEng.email, addEng.school);
+                var newIntern = new Intern(addInt.name, addInt.id, addInt.email, addInt.school);
                 console.log(newIntern);
                 employees.push(newIntern);
                 complete();
